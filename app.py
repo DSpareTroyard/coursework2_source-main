@@ -19,6 +19,5 @@ def post_page(post_id):
     comments = posts_data.get_comments_by_post_id(post_id)
 
 
-
 if __name__ == '__main__':
     app.run()
