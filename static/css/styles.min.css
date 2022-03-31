@@ -451,6 +451,11 @@ textarea {
 	margin-bottom: 23px
 }
 
+.item__comment a{
+    text-decoration: none;
+    color: #000;
+}
+
 .search {
 	padding-bottom: 28px;
 	margin-bottom: 28px;
