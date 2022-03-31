@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-import utils
+import utils, json
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -10,9 +10,11 @@ posts_data = utils.get_posts_data("data/data.json", "data/comments.json")
 def index_page():
     posts = posts_data.get_posts_all()
     comments = posts_data.get_comments()
+    with open("data/bookmarks.json", encoding='utf-8') as f:
+        bookmarks = json.load(f)
     posts = utils.get_posts_with_comment_count(posts, comments)
 
-    return render_template("index.html", posts=posts)
+    return render_template("index.html", posts=posts, bookmarks=bookmarks)
 
 
 @app.route("/posts/<int:post_id>/", methods=["GET"])
