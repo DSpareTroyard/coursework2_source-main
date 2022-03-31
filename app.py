@@ -9,7 +9,6 @@ posts_data = utils.get_posts_data("data/data.json", "data/comments.json")
 @app.route("/", methods=['GET'])
 def index_page():
     posts = posts_data.get_posts_all()
-    print(type(posts))
     comments = posts_data.get_comments()
     posts = utils.get_posts_with_comment_count(posts, comments)
 
@@ -20,8 +19,8 @@ def index_page():
 def post_page(post_id):
     post = posts_data.get_post_by_pk(post_id)
     comments = posts_data.get_comments_by_post_id(post_id)
-
-    return render_template("post.html", post=post, comments=comments)
+    content = utils.get_content_with_tags(post['content'])
+    return render_template("post.html", post=post, comments=comments, content=content)
 
 
 @app.route("/search/", methods=["GET"])
@@ -39,7 +38,6 @@ def user_page(username):
     posts = posts_data.get_posts_by_user(username)
     comments = posts_data.get_comments()
     posts = utils.get_posts_with_comment_count(posts, comments)
-
     return render_template("user-feed.html", posts=posts, username=username)
 
 
@@ -53,6 +51,14 @@ def api_posts_page():
 def api_single_post_page(post_id):
     post = posts_data.get_post_by_pk(post_id)
     return jsonify(post)
+
+
+@app.route("/tag/<tag_name>/")
+def tag_page(tag_name):
+    posts = posts_data.search_for_posts(f'#{tag_name}')
+    comments = posts_data.get_comments()
+    posts = utils.get_posts_with_comment_count(posts, comments)
+    return render_template("tag.html", posts=posts, tag_name=tag_name)
 
 
 if __name__ == '__main__':
