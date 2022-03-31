@@ -35,8 +35,11 @@ class PostsData:
     def search_for_posts(self, query):
         filtered_posts = []
         for post in self.posts:
-            if query in post['content']:
+            if query.lower() in post['content'].lower():
                 filtered_posts.append(post)
+
+        if len(filtered_posts) > 10:
+            filtered_posts = filtered_posts[:10]
 
         return filtered_posts
 
