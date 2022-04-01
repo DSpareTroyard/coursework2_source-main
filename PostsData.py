@@ -2,9 +2,14 @@ import json
 
 
 class PostsData:
-    def __init__(self, posts_path, comments_path):
-        self.posts = self.load_data(posts_path)
-        self.comments = self.load_data(comments_path)
+    def __init__(self, posts_path, comments_path, bookmarks_path):
+        self.posts_path = posts_path
+        self.comments_path = comments_path
+        self.bookmarks_path = bookmarks_path
+
+        self.posts = self.load_data(self.posts_path)
+        self.comments = self.load_data(self.comments_path)
+        self.bookmarks = self.load_data(self.bookmarks_path)
 
     def load_data(self, path):
         with open(path, encoding='utf-8') as f:
@@ -47,3 +52,19 @@ class PostsData:
         for post in self.posts:
             if post['pk'] == pk:
                 return post
+
+    def get_bookmarks(self):
+        return self.bookmarks
+
+    def update_bookmarks(self, bookmarks):
+        self.bookmarks = bookmarks
+        with open(self.bookmarks_path, "w", encoding='utf-8') as f:
+            json.dump(bookmarks, f)
+
+    def get_posts_in_bookmarks(self):
+        filtered_posts = []
+        for post in self.posts:
+            if post['pk'] in self.bookmarks:
+                filtered_posts.append(post)
+
+        return filtered_posts

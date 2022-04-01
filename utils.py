@@ -1,8 +1,8 @@
 from PostsData import PostsData
 
 
-def get_posts_data(posts_path, comments_path):
-    posts_data = PostsData(posts_path, comments_path)
+def get_posts_data(posts_path, comments_path, bookmarks_path):
+    posts_data = PostsData(posts_path, comments_path, bookmarks_path)
     return posts_data
 
 

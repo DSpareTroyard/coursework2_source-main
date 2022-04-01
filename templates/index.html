@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SKYPROGRAM</title>
-  <link href="static/css/styles.min.css" rel="stylesheet">
+  <link href="/static/css/styles.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -16,13 +16,18 @@
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#skyprogram"></use>
         </svg>
       </a>
-      <a href="/bookmarks.html" class="header__bookmark-btn">
-        <img src="static/img/bookmark.png" alt="" class="header__bookmark-icon" width="28">
+      <a href="/bookmarks/" class="header__bookmark-btn">
+        <img src="/static/img/bookmark.png" alt="" class="header__bookmark-icon" width="28">
         <span class="header__bookmark-counter">{{ bookmarks|length }}</span>
       </a>
     </div>
   </header>
   <main class="container">
+    <div class="search">
+      <form action="/search/" class="search__form">
+        <input type="search" class="search__input" name="s" placeholder="Поиск">
+      </form>
+    </div>
     <section class="items">
       {% for post in posts %}
       <div class="items__item item">
@@ -54,9 +59,15 @@
         </div>
         <div class="item__post-bottom">
           <a href="/posts/{{ post.pk }}/" class="item__btn-more">Подробнее</a>
-          <button type="button" class="item__bookmark-btn">
-            <a href="/bookmarks/add/{{post.pk}}"><img src="static/img/bookmark.png" alt="" class="item__bookmark-icon" width="24"></a>
+          {% if post.pk in bookmarks %}
+          <button type="button" class="item__bookmark-btn active">
+            <a href="/bookmarks/remove/{{post.pk}}/"><img src="static/img/bookmark.png" alt="" class="item__bookmark-icon" width="24"></a>
           </button>
+          {% else %}
+          <button type="button" class="item__bookmark-btn">
+            <a href="/bookmarks/add/{{post.pk}}/"><img src="static/img/bookmark.png" alt="" class="item__bookmark-icon" width="24"></a>
+          </button>
+          {% endif%}
         </div>
       </div>
       {% endfor %}
